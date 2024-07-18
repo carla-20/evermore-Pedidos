@@ -420,12 +420,7 @@
                     </ul>
                     <p>Total: $${pedido.total} - Pago: ${pedido.metodoPago}</p>
 
-            <p>Pedido ${pedido.id} </p>
-            <p>Bebidas: </p>
-            <p>Total: $${pedido.total} </p>
-            <p>Pago: ${pedido.metodoPago} </p> 
-            <p>Fecha y Hora: ${pedido.fechaHora}</p>
-            <p>Bebidas: Gin Tonic (${pedido.ginTonic}), Vodka con Speed (${pedido.vodkaSpeed}), Fernet con Coca (${pedido.fernetCoca}), Lata Andes (${pedido.lataAndes}), Agua (${pedido.agua}), Speed (${pedido.speed}), Gaseosa (${pedido.gaseosa})</p>
+            
             <button class="anular" onclick="confirmarAnulacionPedido(${pedido.id})">Anular</button>
             <button class="entregado" id="entregado-${pedido.id}" onclick="marcarEntregado(${pedido.id})">En Proceso</button>
             `;
