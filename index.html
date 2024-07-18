@@ -471,7 +471,7 @@
         }
 
         function descargarExcel() {
-            const data = [['ID Pedido', 'Fecha/Hora', 'Método de Pago', 'Total', 'Gin Tonic', 'Vodka/Speed', 'Fernet/Coca', 'Lata Andes', 'Agua', 'Speed', 'Gaseosa']];
+            const data = [['ID Pedido', 'Fecha/Hora', 'Método de Pago', 'Total', 'Entregado', 'Gin Tonic', 'Vodka/Speed', 'Fernet/Coca', 'Lata Andes', 'Agua', 'Speed', 'Gaseosa']];
 
             pedidos.forEach(pedido => {
                 data.push([
@@ -479,6 +479,7 @@
                     pedido.fechaHora,
                     pedido.metodoPago,
                     pedido.total,
+                    pedido.entregado,
                     pedido.items['Gin Tonic'],
                     pedido.items['Vodka/Speed'],
                     pedido.items['Fernet/Coca'],
@@ -493,20 +494,22 @@
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Pedidos");
 
-            const fechaHoraActual = new Date().toLocaleString();
+            //const fechaHoraActual = new Date().toLocaleString();
             const nombreArchivo = `Pedidos.xlsx`;
 
             XLSX.writeFile(wb, nombreArchivo);
         }
 
         function calcularTotalPorMetodo(metodo) {
-            return pedidos.filter(p => p.metodoPago === metodo).reduce((total, p) => total + parseFloat(p.total), 0);
+            return pedidos
+            .filter(p => p.metodoPago === metodo)
+            .reduce((total, p) => total + parseFloat(p.total), 0);
         }
 
         // Configuración inicial
-        mostrarSeccion('tragos');
-        document.getElementById('order-number').innerText = pedidoID;
-        actualizarTotales();
+        //mostrarSeccion('tragos');
+        //document.getElementById('order-number').innerText = pedidoID;
+        //actualizarTotales();
 
         /*function descargarExcel() {
             const wsPedidos = XLSX.utils.json_to_sheet(pedidos);
@@ -531,7 +534,7 @@
             return pedidos
                 .filter(p => p.metodoPago === metodo)
                 .reduce((total, p) => total + parseFloat(p.total), 0);
-        }
+        }*/
 
         function actualizarFechaHora() {
             document.getElementById('current-datetime').innerText = new Date().toLocaleString();
@@ -539,7 +542,7 @@
 
         // Actualizar fecha y hora cada segundo
         setInterval(actualizarFechaHora, 1000);
-        */
+        
     </script>
 </body>
 </html>
