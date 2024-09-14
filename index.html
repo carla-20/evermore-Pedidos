@@ -307,9 +307,9 @@
                 'vodka-speed': 7000,
                 'fernet-coca': 7000,
                 'lata-andes': 5000,
-                'agua': { 1: 4000, 2: 7000, 3: 11000, 4: 14000 },
-                'gaseosa': { 1: 4000, 2: 7000, 3: 11000, 4: 14000 },
-                'speed': { 1: 4000, 2: 7000, 3: 11000, 4: 14000 }
+                'agua': { individual: 4000, promo: 7000 },
+                'speed': { individual: 4000, promo: 7000 },
+                'gaseosa': { individual: 4000, promo: 7000 }
             };
 
     let total = 0;
@@ -326,13 +326,14 @@
     bebidasConPromo.forEach(id => {
         const cantidad = parseInt(document.getElementById(id).value);
         if (cantidad > 0) {
-            if (cantidad <= 4) {
-                total += precios[id][cantidad];
-            } else {
-                const setsDeCuatro = Math.floor(cantidad / 4);
-                const restantes = cantidad % 4;
-                total += setsDeCuatro * precios[id][4] + precios[id][restantes];
-            }
+            //if (cantidad <= 4) {
+                //total += precios[id][cantidad];
+            //} else {
+                const promos = Math.floor(cantidad / 2);
+                const individuales = cantidad % 2;
+                //total += setsDeCuatro * precios[id][4] + precios[id][restantes];
+                total += promos * precios[id].promo + individuales * precios[id].individual;
+            //}
         }
     });
 
