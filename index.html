@@ -183,19 +183,19 @@
         <div class="section">
             <h2>Tragos</h2>
             <label>
-                Gin Tonic ($6.000)
+                Gin Tonic ($7.000)
                 <button onclick="cambiarCantidad('gin-tonic', -1)">-</button>
                 <input type="number" id="gin-tonic" min="0" value="0" oninput="calcularTotal()">
                 <button onclick="cambiarCantidad('gin-tonic', 1)">+</button>
             </label>
             <label>
-                Vodka/Speed ($6.000)
+                Vodka/Speed ($7.000)
                 <button onclick="cambiarCantidad('vodka-speed', -1)">-</button>
                 <input type="number" id="vodka-speed" min="0" value="0" oninput="calcularTotal()">
                 <button onclick="cambiarCantidad('vodka-speed', 1)">+</button>
             </label>
             <label>
-                Fernet/Coca ($6.000)
+                Fernet/Coca ($7.000)
                 <button onclick="cambiarCantidad('fernet-coca', -1)">-</button>
                 <input type="number" id="fernet-coca" min="0" value="0" oninput="calcularTotal()">
                 <button onclick="cambiarCantidad('fernet-coca', 1)">+</button>
@@ -215,7 +215,7 @@
         <div class="section">
             <h2>Sin Alcohol</h2>
             <label>
-                Agua ($3.500)
+                Agua ($4.000)
                 <button onclick="cambiarCantidad('agua', -1)">-</button>
                 <input type="number" id="agua" min="0" value="0" oninput="calcularTotal()">
                 <button onclick="cambiarCantidad('agua', 1)">+</button>
@@ -227,7 +227,7 @@
                 <button onclick="cambiarCantidad('speed', 1)">+</button>
             </label>
             <label>
-                Gaseosa ($3.500)
+                Gaseosa ($4.000)
                 <button onclick="cambiarCantidad('gaseosa', -1)">-</button>
                 <input type="number" id="gaseosa" min="0" value="0" oninput="calcularTotal()">
                 <button onclick="cambiarCantidad('gaseosa', 1)">+</button>
@@ -287,35 +287,87 @@
             calcularTotal();
         }
 
+        const precios={
+                'gin-tonic': 7000,
+                'vodka-speed': 7000,
+                'fernet-coca': 7000,
+                'lata-andes': 5000 ,
+            }
+        const preciosPromo = {
+                
+                'agua': { individual: 4000, promo: 7000 },
+                'speed': { individual: 4000, promo: 7000 },
+                'gaseosa': { individual: 4000, promo: 7000 }
+            };
+        
         function calcularTotal() {
             const precios = {
-                'gin-tonic': { individual: 6000, promo: 10000 },
-                'vodka-speed': { individual: 6000, promo: 10000 },
-                'fernet-coca': { individual: 6000, promo: 10000 },
-                'lata-andes': { individual: 5000, promo: 8000 },
-                'agua': { individual: 3500, promo: 6000 },
-                'speed': { individual: 4000, promo: 6000 },
-                'gaseosa': { individual: 3500, promo: 6000 }
-  
+
+                'gin-tonic': 7000,
+                'vodka-speed': 7000,
+                'fernet-coca': 7000,
+                'lata-andes': 5000,
+                'agua': { 1: 4000, 2: 7000, 3: 11000, 4: 14000 },
+                'gaseosa': { 1: 4000, 2: 7000, 3: 11000, 4: 14000 },
+                'speed': { 1: 4000, 2: 7000, 3: 11000, 4: 14000 }
             };
 
-            let total = 0;
+    let total = 0;
 
-            Object.keys(precios).forEach(id => {
-                const cantidad = parseInt(document.getElementById(id).value);
-                if (cantidad > 0) {
-                    const promos = Math.floor(cantidad / 2);
-                    const individuales = cantidad % 2;
-                    total += promos * precios[id].promo + individuales * precios[id].individual;
-                }
-            });
+    // Bebidas sin promoción
+    const bebidasSinPromo = ['gin-tonic', 'vodka-speed', 'fernet-coca', 'lata-andes'];
+    bebidasSinPromo.forEach(id => {
+        const cantidad = parseInt(document.getElementById(id).value);
+        total += cantidad * precios[id];
+    });
 
-            document.getElementById('total-amount').textContent = total;
+    // Bebidas con promoción (agua, gaseosa, speed)
+    const bebidasConPromo = ['agua', 'gaseosa', 'speed'];
+    bebidasConPromo.forEach(id => {
+        const cantidad = parseInt(document.getElementById(id).value);
+        if (cantidad > 0) {
+            if (cantidad <= 4) {
+                total += precios[id][cantidad];
+            } else {
+                const setsDeCuatro = Math.floor(cantidad / 4);
+                const restantes = cantidad % 4;
+                total += setsDeCuatro * precios[id][4] + precios[id][restantes];
+            }
         }
+    });
+
+    document.getElementById('total-amount').textContent = total;
+}
+
+        //function calcularTotal() {
+            //const precios = {
+                //'gin-tonic': { individual: 6000, promo: 10000 },
+                //'vodka-speed': { individual: 6000, promo: 10000 },
+                //'fernet-coca': { individual: 6000, promo: 10000 },
+                //'lata-andes': { individual: 5000, promo: 8000 },
+                //'agua': { individual: 3500, promo: 6000 },
+                //'speed': { individual: 4000, promo: 6000 },
+                //'gaseosa': { individual: 3500, promo: 6000 }
+  
+            //};
+
+            //let total = 0;
+
+            //Object.keys(precios).forEach(id => {
+                //const cantidad = parseInt(document.getElementById(id).value);
+                //if (cantidad > 0) {
+                //    const promos = Math.floor(cantidad / 2);
+                //    const individuales = cantidad % 2;
+                //    total += promos * precios[id].promo + individuales * precios[id].individual;
+                //}
+            //});
+
+            //document.getElementById('total-amount').textContent = total;
+        //}
 
             //let total = 0;
             //for (let key in precios) {
-            //    total += document.getElementById(key).value * precios[key];
+                //total += document.getElementById(key).value * precios[key];
             //}
             //document.getElementById('total-amount').innerText = total;
         //}
@@ -418,7 +470,8 @@
                     <ul>
                         ${Object.entries(pedido.items).map(([item, cantidad]) => cantidad > 0 ? `<li>${item}: ${cantidad}</li>` : '').join('')}
                     </ul>
-                    <p>Total: $${pedido.total} - Pago: ${pedido.metodoPago}</p>
+                    <p>Total: $${pedido.total} </p>
+                    <p>Pago: ${pedido.metodoPago}</p>
 
             
             <button class="anular" onclick="confirmarAnulacionPedido(${pedido.id})">Anular</button>
